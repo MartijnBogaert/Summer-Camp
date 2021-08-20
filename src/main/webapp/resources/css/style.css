@@ -15,3 +15,7 @@ input[type=submit] {
 	cursor: pointer;
 	border-radius: 25px;
 }
+
+.error {
+	color: red;
+}

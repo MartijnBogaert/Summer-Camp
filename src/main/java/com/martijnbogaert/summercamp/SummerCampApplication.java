@@ -25,5 +25,10 @@ public class SummerCampApplication implements WebMvcConfigurer {
 	public CampService campService() {
 		return new SummerCampServiceImpl();
 	}
+	
+	@Bean
+	public PostalCodeValidator postalCodeValidator() {
+		return new PostalCodeValidator();
+	}
 
 }

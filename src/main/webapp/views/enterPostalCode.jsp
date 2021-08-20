@@ -24,6 +24,7 @@
 				<tr>
 					<td>${title}:</td>
 					<td><form:input path="value" size="4" /></td>
+					<td><form:errors path="value" cssClass="error" /></td>
 				</tr>
 			</tbody>
 		</table>
