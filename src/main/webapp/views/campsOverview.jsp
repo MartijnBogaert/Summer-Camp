@@ -10,6 +10,8 @@
 <spring:message code="campsOverview.max" var="max" />
 <spring:message code="campsOverview.errors.nocamps" var="noCamps" />
 
+<spring:url value="/summercamp/add/" var="campAddUrl" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +36,7 @@
 				<tbody>
 					<c:forEach items="${camps}" var="camp">
 						<tr>
-							<td>${camp.manager.name}</td>
+							<td><a href="${campAddUrl}${camp.id}">${camp.manager.name}</a></td>
 							<td>${camp.postalCode}</td>
 							<td>${camp.maxChildren}</td>
 						</tr>

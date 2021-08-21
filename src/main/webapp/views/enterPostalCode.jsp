@@ -18,7 +18,7 @@
 <body>
 	<h1>${title}</h1>
 
-	<form:form method="POST" action="summercamp" modelAttribute="postalCode">
+	<form:form method="POST" action="/summercamp" modelAttribute="postalCode">
 		<table>
 			<tbody>
 				<tr>
@@ -28,7 +28,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type="submit" value=${apply} />
+		<input type="submit" value="${apply}" />
 	</form:form>
 </body>
 </html>

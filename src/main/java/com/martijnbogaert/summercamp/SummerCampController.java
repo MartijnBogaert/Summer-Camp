@@ -6,8 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import domain.Camp;
+import domain.Person;
 import service.CampService;
 
 @Controller
@@ -37,6 +40,20 @@ public class SummerCampController {
 		model.addAttribute("camps", campService.findCamps(postalCodeValue));
 		
 		return "campsOverview";
+	}
+	
+	@GetMapping("/summercamp/add/{id}")
+	public String showCampAddPage(@PathVariable int id, Model model) {
+		Camp camp = campService.findCamp(id);
+		
+		if (camp == null) {
+			return "redirect:/summercamp";
+		}
+		
+		model.addAttribute("camp", camp);
+		model.addAttribute("person", new Person());
+		
+		return "campAdd";
 	}
 
 }
