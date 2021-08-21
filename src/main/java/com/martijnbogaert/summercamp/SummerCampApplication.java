@@ -30,5 +30,10 @@ public class SummerCampApplication implements WebMvcConfigurer {
 	public PostalCodeValidator postalCodeValidator() {
 		return new PostalCodeValidator();
 	}
+	
+	@Bean
+	public PersonCodesValidator personCodesValidator() {
+		return new PersonCodesValidator();
+	}
 
 }
