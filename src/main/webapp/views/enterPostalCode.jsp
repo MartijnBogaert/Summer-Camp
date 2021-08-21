@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <spring:message code="general.summercamp" var="summerCamp" />
 <spring:message code="general.apply" var="apply" />
@@ -11,14 +12,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${summerCamp} | ${title}</title>
+<title>${summerCamp}| ${title}</title>
 <spring:url value="/css/style.css" var="urlCss" />
 <link rel="stylesheet" href="${urlCss}" type="text/css" />
 </head>
 <body>
+	<c:if test="${not empty signedUp}">
+		<div class="message">${signedUp}</div>
+	</c:if>
+
+	<c:if test="${not empty booked}">
+		<div class="error message">${booked}</div>
+	</c:if>
+
 	<h1>${title}</h1>
 
-	<form:form method="POST" action="/summercamp" modelAttribute="postalCode">
+	<form:form method="POST" action="/summercamp"
+		modelAttribute="postalCode">
 		<table>
 			<tbody>
 				<tr>

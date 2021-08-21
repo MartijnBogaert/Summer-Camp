@@ -24,3 +24,7 @@ input[type=submit] {
 .error {
 	color: red;
 }
+
+.message {
+	margin-bottom: 50px;
+}
