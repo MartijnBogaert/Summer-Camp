@@ -48,7 +48,10 @@ public class SummerCampController {
 			model.addAttribute("booked", message);
 		}
 
-		model.addAttribute("postalCode", new PostalCode());
+		PostalCode postalCode = new PostalCode();
+		postalCode.setValue("8000");
+		model.addAttribute("postalCode", postalCode);
+
 		return "enterPostalCode";
 	}
 
