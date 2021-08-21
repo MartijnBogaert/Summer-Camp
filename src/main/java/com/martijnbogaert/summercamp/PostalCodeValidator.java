@@ -1,9 +1,15 @@
 package com.martijnbogaert.summercamp;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 public class PostalCodeValidator implements Validator {
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -21,12 +27,18 @@ public class PostalCodeValidator implements Validator {
 			try {
 				int postalCodeValue = Integer.parseInt(postalCode.getValue());
 				
-				if (postalCodeValue < 1000) {
-					errors.rejectValue("value", "enterPostalCode.errors.larger", "Postal code should be larger or equal to 1000");
+				Integer min = 1000;
+				if (postalCodeValue < min) {
+					String[] params = {min.toString()};
+					String message = messageSource.getMessage("enterPostalCode.errors.larger", params, LocaleContextHolder.getLocale());
+					errors.rejectValue("value", null, message);
 				}
 				
-				if (postalCodeValue > 9990) {
-					errors.rejectValue("value", "enterPostalCode.errors.smaller", "Postal code should smaller or equal to 9990");
+				Integer max = 9990;
+				if (postalCodeValue > max) {
+					String[] params = {max.toString()};
+					String message = messageSource.getMessage("enterPostalCode.errors.smaller", params, LocaleContextHolder.getLocale());
+					errors.rejectValue("value", null, message);
 				}
 			} catch (NumberFormatException e) {
 				errors.rejectValue("value", "enterPostalCode.errors.number", "Postal code should be a number");
