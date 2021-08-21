@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import domain.Camp;
@@ -19,6 +20,7 @@ import domain.Person;
 import service.CampService;
 
 @Controller
+@RequestMapping("/summercamp")
 public class SummerCampController {
 
 	@Autowired
@@ -33,7 +35,7 @@ public class SummerCampController {
 	@Autowired
 	private MessageSource messageSource;
 
-	@GetMapping("/summercamp")
+	@GetMapping
 	public String showEnterPostalCodePage(@RequestParam(value = "signedUp", required = false) boolean signedUp,
 			@RequestParam(value = "manager_name", required = false) String managerName, Model model) {
 		if (signedUp) {
@@ -55,7 +57,7 @@ public class SummerCampController {
 		return "enterPostalCode";
 	}
 
-	@PostMapping("/summercamp")
+	@PostMapping
 	public String showCampOverviewPage(@ModelAttribute PostalCode postalCode, BindingResult result, Model model) {
 		postalCodeValidator.validate(postalCode, result);
 		if (result.hasErrors())
@@ -67,7 +69,7 @@ public class SummerCampController {
 		return "campsOverview";
 	}
 
-	@GetMapping("/summercamp/add/{id}")
+	@GetMapping("/add/{id}")
 	public String showCampAddPage(@PathVariable int id, Model model) {
 		Camp camp = campService.findCamp(id);
 		if (camp == null)
@@ -79,7 +81,7 @@ public class SummerCampController {
 		return "campAdd";
 	}
 
-	@PostMapping("/summercamp/add/{id}")
+	@PostMapping("/add/{id}")
 	public String signUp(@PathVariable int id, @Valid Person person, BindingResult result, Model model) {
 		Camp camp = campService.findCamp(id);
 		if (camp == null)
