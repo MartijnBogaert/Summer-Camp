@@ -30,7 +30,7 @@
 		<div class="msg">${loggedOut}</div>
 	</c:if>
 
-	<form action='login' method='POST'>
+	<form method='POST' action='/login' >
 		<table>
 			<tr>
 				<td>${username}:</td>

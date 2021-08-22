@@ -50,7 +50,7 @@
 		</c:otherwise>
 	</c:choose>
 	
-	<form method='POST' action='logout'>
+	<form method='POST' action='/logout'>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<input type="submit" value="${logOut}" />
 	</form>

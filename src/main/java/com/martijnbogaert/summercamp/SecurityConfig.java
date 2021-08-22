@@ -36,7 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/summercamp/*").permitAll()
 			.antMatchers("/summercamp/add/**").hasRole("ADMIN")
 			.antMatchers("/**").hasRole("USER")
-			.and().csrf();
+			.and()
+			.exceptionHandling().accessDeniedPage("/403")
+			.and()
+			.csrf();
 	}
 
 }
