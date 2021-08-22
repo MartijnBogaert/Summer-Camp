@@ -1,4 +1,4 @@
-package com.martijnbogaert.summercamp;
+package domain;
 
 public class PostalCode {
 	

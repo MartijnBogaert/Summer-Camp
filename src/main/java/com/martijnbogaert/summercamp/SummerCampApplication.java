@@ -9,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import service.CampService;
 import service.SummerCampServiceImpl;
+import validators.PersonCodesValidator;
+import validators.PostalCodeValidator;
 
 @SpringBootApplication
 public class SummerCampApplication implements WebMvcConfigurer {
