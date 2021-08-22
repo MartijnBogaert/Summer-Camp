@@ -7,6 +7,7 @@
 <spring:message code="general.summercamp" var="summerCamp" />
 <spring:message code="general.apply" var="apply" />
 <spring:message code="enterPostalCode.title" var="title" />
+<spring:message code="general.logout" var="logOut" />
 
 <!DOCTYPE html>
 <html>
@@ -40,5 +41,10 @@
 		</table>
 		<input type="submit" value="${apply}" />
 	</form:form>
+	
+	<form method='POST' action='logout'>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="submit" value="${logOut}" />
+	</form>
 </body>
 </html>

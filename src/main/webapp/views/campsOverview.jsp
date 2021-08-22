@@ -9,6 +9,7 @@
 <spring:message code="campsOverview.postalcode" var="postalCode" />
 <spring:message code="campsOverview.max" var="max" />
 <spring:message code="campsOverview.errors.nocamps" var="noCamps" />
+<spring:message code="general.logout" var="logOut" />
 
 <spring:url value="/summercamp/add/" var="campAddUrl" />
 
@@ -48,5 +49,10 @@
 			<span class="error">${noCamps}</span>
 		</c:otherwise>
 	</c:choose>
+	
+	<form method='POST' action='logout'>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="submit" value="${logOut}" />
+	</form>
 </body>
 </html>
