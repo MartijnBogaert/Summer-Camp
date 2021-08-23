@@ -1,6 +1,7 @@
 package com.martijnbogaert.summercamp;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -16,8 +17,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import domain.PostalCode;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -56,10 +55,12 @@ public class SummerCampControllerTest {
 	
 	@Test
 	public void showEnterPostalCodePage_Get_SignedUpTrueRequestParam() throws Exception {
+		String message = wac.getMessage("enterPostalCode.signedup", null, LocaleContextHolder.getLocale());
+		
 		mockMvc.perform(get("/summercamp?signedUp=true"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("enterPostalCode"))
-			.andExpect(model().attributeExists("signedUp"))
+			.andExpect(model().attribute("signedUp", message))
 			.andExpect(model().attributeDoesNotExist("booked"))
 			.andExpect(model().attributeExists("postalCode"));
 	}
@@ -75,6 +76,88 @@ public class SummerCampControllerTest {
 			.andExpect(view().name("enterPostalCode"))
 			.andExpect(model().attributeDoesNotExist("signedUp"))
 			.andExpect(model().attribute("booked", message))
+			.andExpect(model().attributeExists("postalCode"));
+	}
+	
+	@Test
+	public void showCampOverviewPage_Post_ValidPostalCode() throws Exception {
+		mockMvc.perform(post("/summercamp").param("value", "8310"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("campsOverview"))
+			.andExpect(model().hasNoErrors())
+			.andExpect(model().attributeHasNoErrors("postalCode"))
+			.andExpect(model().attributeExists("camps"));
+	}
+	
+	@Test
+	public void showCampOverviewPage_Post_PostalCodeOnLeftBoundary() throws Exception {
+		mockMvc.perform(post("/summercamp").param("value", "1000"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("campsOverview"))
+			.andExpect(model().hasNoErrors())
+			.andExpect(model().attributeHasNoErrors("postalCode"))
+			.andExpect(model().attributeDoesNotExist("camps")); // No camps for 1000
+	}
+	
+	@Test
+	public void showCampOverviewPage_Post_PostalCodeOnRightBoundary() throws Exception {
+		mockMvc.perform(post("/summercamp").param("value", "9990"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("campsOverview"))
+			.andExpect(model().hasNoErrors())
+			.andExpect(model().attributeHasNoErrors("postalCode"))
+			.andExpect(model().attributeDoesNotExist("camps")); // No camps for 9990
+	}
+	
+	@Test
+	public void showCampOverviewPage_Post_NoPostalCode() throws Exception {
+		mockMvc.perform(post("/summercamp").param("value", ""))
+			.andExpect(status().isOk())
+			.andExpect(view().name("enterPostalCode"))
+			.andExpect(model().hasErrors())
+			.andExpect(model().attributeHasFieldErrorCode("postalCode", "value", "enterPostalCode.errors.novalue"))
+			.andExpect(model().attributeDoesNotExist("camps"))
+			.andExpect(model().attributeDoesNotExist("signedUp"))
+			.andExpect(model().attributeDoesNotExist("booked"))
+			.andExpect(model().attributeExists("postalCode"));
+	}
+	
+	@Test
+	public void showCampOverviewPage_Post_NoIntegerPostalCode() throws Exception {
+		mockMvc.perform(post("/summercamp").param("value", "test"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("enterPostalCode"))
+			.andExpect(model().hasErrors())
+			.andExpect(model().attributeHasFieldErrorCode("postalCode", "value", "enterPostalCode.errors.number"))
+			.andExpect(model().attributeDoesNotExist("camps"))
+			.andExpect(model().attributeDoesNotExist("signedUp"))
+			.andExpect(model().attributeDoesNotExist("booked"))
+			.andExpect(model().attributeExists("postalCode"));
+	}
+	
+	@Test
+	public void showCampOverviewPage_Post_PostalCodeOutsideLeftBoundary() throws Exception {
+		mockMvc.perform(post("/summercamp").param("value", "999"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("enterPostalCode"))
+			.andExpect(model().hasErrors())
+			.andExpect(model().attributeHasFieldErrors("postalCode", "value"))
+			.andExpect(model().attributeDoesNotExist("camps"))
+			.andExpect(model().attributeDoesNotExist("signedUp"))
+			.andExpect(model().attributeDoesNotExist("booked"))
+			.andExpect(model().attributeExists("postalCode"));
+	}
+	
+	@Test
+	public void showCampOverviewPage_Post_PostalCodeOutsideRightBoundary() throws Exception {
+		mockMvc.perform(post("/summercamp").param("value", "999"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("enterPostalCode"))
+			.andExpect(model().hasErrors())
+			.andExpect(model().attributeHasFieldErrors("postalCode", "value"))
+			.andExpect(model().attributeDoesNotExist("camps"))
+			.andExpect(model().attributeDoesNotExist("signedUp"))
+			.andExpect(model().attributeDoesNotExist("booked"))
 			.andExpect(model().attributeExists("postalCode"));
 	}
 	
