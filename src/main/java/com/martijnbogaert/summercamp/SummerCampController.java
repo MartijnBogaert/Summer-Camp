@@ -98,6 +98,7 @@ public class SummerCampController {
 
 		if (camp.maxChildrenExceeded())
 			return "redirect:/summercamp?manager_name=" + camp.getManager().getName();
+		
 		camp.signUpChild(person);
 
 		return "redirect:/summercamp?signedUp=true";
