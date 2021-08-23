@@ -161,4 +161,22 @@ public class SummerCampControllerTest {
 			.andExpect(model().attributeExists("postalCode"));
 	}
 	
+	@Test
+	public void showCampAddPage_Get_ValidCampId() throws Exception {
+		mockMvc.perform(get("/summercamp/add/1"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("campAdd"))
+			.andExpect(model().attributeExists("camp"))
+			.andExpect(model().attributeExists("person"));
+	}
+	
+	@Test
+	public void showCampAddPage_Get_NonExistentCampId() throws Exception {
+		mockMvc.perform(get("/summercamp/add/100"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/summercamp"))
+			.andExpect(model().attributeDoesNotExist("camp"))
+			.andExpect(model().attributeDoesNotExist("person"));
+	}
+	
 }
